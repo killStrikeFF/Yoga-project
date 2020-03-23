@@ -1,7 +1,7 @@
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
 
     'use strict';
-    let tab = document.querySelectorAll('.info-header-tab'),        
+    let tab = document.querySelectorAll('.info-header-tab'),
         info = document.querySelector('.info-header'),
         tabContent = document.querySelectorAll('.info-tabcontent');
 
@@ -15,18 +15,18 @@ window.addEventListener('DOMContentLoaded', function() {
     hideTabContent(1);
 
     function showTabContent(b) {
-        if(tabContent[b].classList.contains('hide')) {
+        if (tabContent[b].classList.contains('hide')) {
             tabContent[b].classList.remove('hide');
             tabContent[b].classList.add('show');
-            
+
         }
     }
 
-    info.addEventListener('click', function(event) {
+    info.addEventListener('click', function (event) {
         let target = event.target;
-        if(target && target.classList.contains('info-header-tab')) {
+        if (target && target.classList.contains('info-header-tab')) {
             for (let i = 0; i < tab.length; i++) {
-                if(target == tab[i]) {
+                if (target == tab[i]) {
                     hideTabContent(0);
                     showTabContent(i);
                     break;
@@ -36,19 +36,19 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 
     /* Таймер */
-    let deadline = '2020-01-01';
+    let deadline = '2021-01-01';
 
     function getTimeRemaining(endtime) {
         let t = Date.parse(endtime) - Date.parse(new Date()),
-            seconds = Math.floor((t/1000) % 60),
-            minutes = Math.floor((t/1000/60) % 60),
-            hours = Math.floor((t/(1000*60*60)));
-        
+            seconds = Math.floor((t / 1000) % 60),
+            minutes = Math.floor((t / 1000 / 60) % 60),
+            hours = Math.floor((t / (1000 * 60 * 60)));
+
         return {
-            'total' : t,
-            'hours' : hours,
-            'minutes' : minutes,
-            'seconds' : seconds
+            'total': t,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
         };
     }
 
@@ -61,7 +61,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
         function updateClock() {
             let t = getTimeRemaining(endtime);
-            
+
             hours.textContent = t.hours;
             if (t.minutes > 9) {
                 minutes.textContent = t.minutes;
@@ -75,7 +75,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 seconds.textContent = '0' + t.seconds;
             }
 
-            if(t.total <= 0) {
+            if (t.total <= 0) {
                 clearInterval(timeInterval);
                 hours.textContent = '00';
                 minutes.textContent = '00';
@@ -96,14 +96,15 @@ window.addEventListener('DOMContentLoaded', function() {
         overlay = document.querySelector('.overlay'),
         close = document.querySelector('.popup-close'),
         knowleage = document.getElementsByClassName('.description-btn');
-    
-    
+
+
 
     function openForm() {
         overlay.style.display = 'block';
         this.classList.add('more-splash');
         document.body.style.overflow = 'hidden';
     }
+
     function closeForm() {
         overlay.style.display = 'none';
         more.classList.remove('more-splash');
@@ -111,9 +112,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     more.addEventListener('click', openForm);
-    // knowleage.addEventListener('click', openForm);
     close.addEventListener('click', closeForm);
-    // knowleage.addEventListener('click', closeForm);
 
     /* Отправка Формы на сервер без перезагрузки */
     let message = {
@@ -128,28 +127,28 @@ window.addEventListener('DOMContentLoaded', function() {
 
     statusMessage.classList.add('status');
 
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', function (event) {
         event.preventDefault();
         form.appendChild(statusMessage);
 
         let formData = new FormData(form);
+
         function postData(data) {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 let request = new XMLHttpRequest();
-    
+
                 request.open('POST', 'server.php');
-                // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
-                request.setRequestHeader('Content-Type', 'application/json; charset=utf-8'); //с помощью JSON
-                
+                request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+
                 let obj = {};
-                formData.forEach(function(value, key) {
+                formData.forEach(function (value, key) {
                     obj[key] = value;
                 });
                 let json = JSON.stringify(obj);
-        
+
                 request.send(json);
 
-                request.addEventListener('readystatechange', function() {
+                request.addEventListener('readystatechange', function () {
                     if (request.readyState < 4) {
                         resolve();
                     } else if (request.readyState == 4 && request.status == 200) {
@@ -178,28 +177,27 @@ window.addEventListener('DOMContentLoaded', function() {
     /* Отправка контактной формы на сервер без перезагрузки */
     let formSecond = document.querySelector('#form');
 
-    formSecond.addEventListener('submit', function(event) {
+    formSecond.addEventListener('submit', function (event) {
         event.preventDefault();
         formSecond.appendChild(statusMessage);
 
         let request = new XMLHttpRequest();
 
         request.open('POST', 'server.php');
-        // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
-        request.setRequestHeader('Content-Type', 'application/json; charset=utf-8'); //с помощью JSON
+        request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
         let formData = new FormData(formSecond);
         console.log(formSecond);
 
         let obj = {};
-        formData.forEach(function(value, key) {
+        formData.forEach(function (value, key) {
             obj[key] = value;
         });
         let rep = JSON.stringify(obj);
 
         request.send(rep);
-        
-        request.addEventListener('readystatechange', function() {
+
+        request.addEventListener('readystatechange', function () {
             if (request.readyState < 4) {
                 statusMessage.innerHTML = message.loading;
             } else if (request.readyState == 4 && request.status == 200) {
@@ -212,7 +210,7 @@ window.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < input.length; i++) {
             input[i].value = '';
         }
-    
+
     });
 
     /* Slider */
@@ -228,10 +226,10 @@ window.addEventListener('DOMContentLoaded', function() {
 
     function showSlides(n) {
 
-        if(n > slides.length) {
+        if (n > slides.length) {
             slideIndex = 1;
         }
-        if(n < 1) {
+        if (n < 1) {
             slideIndex = slides.length;
         }
 
@@ -240,29 +238,29 @@ window.addEventListener('DOMContentLoaded', function() {
         dots.forEach((item) => item.classList.remove('dot-active'));
 
         slides[slideIndex - 1].style.display = 'block';
-        dots[slideIndex -1].classList.add('dot-active');
+        dots[slideIndex - 1].classList.add('dot-active');
 
     }
 
     function plusSlides(n) {
-        showSlides(slideIndex += n); 
+        showSlides(slideIndex += n);
     }
 
     function currentSlide(n) {
         showSlides(slideIndex = n);
     }
 
-    prev.addEventListener('click', function() {
+    prev.addEventListener('click', function () {
         plusSlides(-1);
     });
 
-    next.addEventListener('click', function() {
+    next.addEventListener('click', function () {
         plusSlides(1);
     });
 
-    dotsWrap.addEventListener('click', function(event) {
+    dotsWrap.addEventListener('click', function (event) {
         for (let i = 0; i < dots.length + 1; i++) {
-            if (event.target.classList.contains('dot') && event.target == dots[i-1]) {
+            if (event.target.classList.contains('dot') && event.target == dots[i - 1]) {
                 currentSlide(i);
             }
         }
@@ -279,13 +277,13 @@ window.addEventListener('DOMContentLoaded', function() {
 
     totalValue.innerHTML = 0;
 
-    persons.addEventListener('input', function() {
+    persons.addEventListener('input', function () {
         personsSum = +this.value;
 
         if (personsSum == '') {
             totalValue.innerHTML = 0;
         } else {
-            total = (daysSum + personsSum)*4000;
+            total = (daysSum + personsSum) * 4000;
 
             if (restDays.value === '') {
                 totalValue.innerHTML = 0;
@@ -295,13 +293,13 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    restDays.addEventListener('input', function() {
+    restDays.addEventListener('input', function () {
         daysSum = +this.value;
 
         if (daysSum == '') {
             totalValue.innerHTML = 0;
         } else {
-            total = (daysSum + personsSum)*4000;
+            total = (daysSum + personsSum) * 4000;
 
             if (persons.value === '') {
                 totalValue.innerHTML = 0;
@@ -309,10 +307,10 @@ window.addEventListener('DOMContentLoaded', function() {
                 totalValue.innerHTML = total;
             }
         }
-        
+
     });
 
-    place.addEventListener('input', function() {
+    place.addEventListener('input', function () {
         if (restDays.value === '' && persons.value === '') {
             totalValue.innerHTML = 0;
         } else {
@@ -321,4 +319,3 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
